@@ -150,7 +150,45 @@ deletePost: async function (req, res) {
 getAllPost: async function (req, res) {
     await models.Post.findAll().then(allPost => res.send(allPost))
 
+},
+
+/************************************************************************* ONE POST AND COMMENTS *******************************************************************************/
+
+getOnePost: async function (req, res) {
+
+    const HeaderAuth = req.headers['authorization'];
+    const userId = jwtUtils.getUserId(HeaderAuth);
+
+        if (userId < 0)
+            return res.status(400).json({ 'error': 'invalide Token' })
+       
+            await models.Post.findOne({
+            attributes: ['id', 'title', 'userName', 'userId', 'content', 'attachment'],
+            where: { id: req.params.id },
+        }).then(async function (post) {
+            await models.User.findOne({ 
+                attributes: ['userName'],
+                where: { id: userId }
+            }).then(async function (user) {
+                await models.Comment.findAll({
+                    attributes: ['comment', 'userName','id', 'userId'],
+                    where: { postId: req.params.id },
+                })
+                    .then(function (comment) {
+                        const getOne = { post, user, comment }
+                        res.status(200).json(getOne)
+                    }).catch(function (err) {
+                        res.status(500).json({ 'error': err })
+                    });
+            }).catch(function (err) {
+                res.status(500).json({ 'error': err })
+            });
+        }).catch(function (err) {
+            res.status(500).json({ 'error': err })
+        });
+
 }
+
 
 
 

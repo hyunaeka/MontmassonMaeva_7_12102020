@@ -1,38 +1,61 @@
-//imports 
+const http = require('http');
+const app = require('./app');
+const db = require('./models/index.js');
+const { sequelize } = require('./models/index');
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const cors = require('cors');
-const appRouter = require('./app').router;
+const normalizePort = val => {
+  const port = parseInt(val, 10);
 
-// Lancer le serveur
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+};
+const port = normalizePort(process.env.PORT || '3000');
 
-const server = express();
-server.use(cors());
+app.set('port', port); 
 
-// Cette partie configure et autorise les requêtes Multi-Origin; définit les Headers & les Méthodes
+const errorHandler = error => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  const address = server.address();
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges.');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use.');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
+const server = http.createServer(app);
 
-server.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    next();
+db.sequelize.sync().then(function () {
+    server.on("error", errorHandler);
+    server.on("listening", () => {
+      const address = server.address();
+      const bind =
+        typeof address === "string" ? "pipe " + address : "port " + port;
+      console.log("Listening on " + bind);
+     
+    });
+    server.listen(port);
 });
-
-// Config du body parser
-server.use(express.urlencoded({extended:true}));
-server.use(express.json());
-
-
-server.get ('/', function(req, res, next){
-    res.setHeader('Content-Type','text/html');                          
-    res.status(200).send('<h1> Vous êtes connecté au serveur </h1>');   
-});
-
-
-server.use('/api/', appRouter);
-
-server.listen(3000, function(){
-    console.log('Server Ready');
-});
+const Connexion = async function () {
+try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+};
+Connexion(); 
