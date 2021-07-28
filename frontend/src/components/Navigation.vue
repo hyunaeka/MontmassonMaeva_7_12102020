@@ -1,5 +1,5 @@
 <template>
-    <div class="nav">
+    <div class="">
         <button>
             <router-link :to="{ name: 'home'}">Home</router-link>
         </button>
@@ -11,9 +11,6 @@
         </button>
         <button>
             <router-link :to="{ name: 'profile'}">Profile</router-link>
-        </button>
-        <button>
-            <router-link :to="{ name: 'wall'}">Wall</router-link>
         </button>
     </div>
 </template>

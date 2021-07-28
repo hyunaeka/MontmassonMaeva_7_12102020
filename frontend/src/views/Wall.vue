@@ -1,35 +1,31 @@
 <template>
 	<div >
 
-         <h1 class="card__title">post {{ }}</h1>
-           <div class="card">
-               <h1>{{ articleUnique.title}}</h1>
-               <p>{{  articleUnique.body}}</p>
-           </div>
+            <thePostView/>
+
 	</div>
 </template>
 
 <script>
 
-import axios from 'axios'
+import thePostView from '@/components/Wall.vue'
 
 export default {
 	name: "wall",
 
     data() {
         return {
-        articleUnique: [],
-        postView: [],   
+        postView: [],
 
         }
     },
-    mounted(){
-        axios
-        .get(`http://localhost:3000/api/posts/userPost/`)
-         .then(response => {
 
-            this.articleUnique = response.data 
-         })
+        components: {
+
+        thePostView
+
+    }
+   
              /*
              let dataPost = {
             id: response.data[0].id,
@@ -48,7 +44,6 @@ export default {
                         this.isAdmin = false
           }
          }) */
-    },
 
     /*methods: {
 

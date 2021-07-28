@@ -31,7 +31,7 @@ const router = new VueRouter({
   {path: '/Dashboard', name: 'dashboard', component: Dashboard },
   {path: '/Home', name: 'home', component: Home },
   {path: '/Wall', name: 'wall', component: Wall },
-  {path: '/postsView/:id', name: 'wall', component: Post },
+  {path: '/postsView/:id', name: 'postsView', component: Post },
   ]
 })
 

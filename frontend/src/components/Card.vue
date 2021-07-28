@@ -4,7 +4,7 @@
          <h1 class="card__title">Publication</h1>
           
            <div class="card" :key="index" v-for="(article, index) in posts" >
-                <router-link :to="`/postsView/${index + 1}`">
+                <router-link :to="`/postsView/${article.id}`">
                <h1>{{ article.title }}</h1>
                </router-link>
               
@@ -23,6 +23,8 @@
 
 import axios from 'axios'
 
+
+
 export default {
 	name: "wallscard",
 
@@ -37,6 +39,8 @@ export default {
         axios.get('http://localhost:3000/api/posts/all')
             .then(response => { for( const postsView of response.data){
                 this.posts.push(postsView)
+
+                console.log(response.data)
             }
             
             })
