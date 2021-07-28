@@ -47,7 +47,7 @@ savePost: async function (req, res){
         }
 
     }).catch(function (err) {
-        return res.status(500).json({ 'error': 'Impossible de créer la publication' });
+        return res.status(500).json({ 'error': err });
     });
 },
 
@@ -80,9 +80,9 @@ modifyPost: async function (req, res) {
                         post.content = req.body.content
                     };
                     if (req.body.attachement){
-                        post.attachement = req.body.attachement
+                        post.attachement = req.body.attachment
                     };
-                    const newPost = await post.save({ fields: ['title','content','attachement']});
+                    const newPost = await post.save({ fields: ['title','content','attachment']});
                         return res.status(200).json({
                             post: newPost,
                             messageRetour: "Changement enregistré"
@@ -92,13 +92,13 @@ modifyPost: async function (req, res) {
                    return res.status(404).json({ 'error': 'Impossible de récupérer le post' });
                 }
             }).catch(function (err) {
-               return res.status(500).json({ 'error': 'error changement' })
+               return res.status(500).json({ 'error': err })
             });
         } else {
            return res.status(404).json({ 'error': 'Utilisateur non reconnu' });
         }
     }).catch(function (err) {
-       return res.status(500).json({ 'error': 'error code' })
+       return res.status(500).json({ 'error': err })
     });
 },
 
@@ -135,13 +135,13 @@ deletePost: async function (req, res) {
                     return res.status(404).json({ 'error': 'Impossible de supprimer le post' });
                 }
             }).catch(function (err) {
-                return res.status(500).json({ 'error': 'server erreur' })
+                return res.status(500).json({ 'error': err })
             });
         } else {
             return res.status(404).json({ 'error': 'Probléme authentification' });
         }
     }).catch(function (err) {
-        return res.status(500).json({ 'error': 'error' })
+        return res.status(500).json({ 'error': err })
     });
 },
 
@@ -175,7 +175,7 @@ getOnePost: async function (req, res) {
                     where: { postId: req.params.id },
                 })
                     .then(function (comment) {
-                        const getOne = { post, user, comment }
+                        const getOne = { post, comment }
                         res.status(200).json(getOne)
                     }).catch(function (err) {
                         res.status(500).json({ 'error': err })

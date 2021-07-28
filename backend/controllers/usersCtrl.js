@@ -18,11 +18,11 @@ module.exports = {
     const bio      = req.body.bio;
 
     if (email == null || username == null || password == null) {
-      return res.status(400).json({ 'error': 'missing parameters' });
+      return res.status(400).json({ 'error': 'Veuillez remplir le champ de saisi' });
     } //verify 
 
     if(username.length >= 13 || username.length <= 4){
-        return res.status(400).json({'error': 'missing parameters'});
+        return res.status(400).json({'error': 'le pseudo est trop petit'});
     }
     if(!email_regex.test(email)){
         return res.status(400).json({'error': 'email invalide'});
@@ -50,7 +50,7 @@ module.exports = {
                     })
                 })
                 .catch(function(err) {
-                    return res.status(500).json({'error': 'Impossible de créer un utilisateur'});
+                    return res.status(500).json({'error': err});
                   });
             });
             
@@ -160,7 +160,7 @@ module.exports = {
                    res.status(404).json({ 'error': 'error' }); 
                }
            }).catch(function (err) {
-               return res.status(500).json({ 'error': 'error' });
+               return res.status(500).json({ 'error': err });
            })
 
   }

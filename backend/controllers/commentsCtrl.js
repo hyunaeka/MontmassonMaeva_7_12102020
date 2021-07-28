@@ -33,7 +33,7 @@ module.exports = {
             }
 
         }).catch(function (err) {
-            return res.status(500).json({ 'error': 'error' });
+            return res.status(500).json({ 'error': err });
         });
     },
 
@@ -66,13 +66,13 @@ module.exports = {
                         return res.status(404).json({ 'error': 'Erreur dans la suppression du post' });
                     }
                 }).catch(function (err) {
-                    return res.status(500).json({ 'error': 'server erreur' })
+                    return res.status(500).json({ 'error': err })
                 });
             } else {
                 return res.status(404).json({ 'error': 'Erreur identification' });
             }
         }).catch(function (err) {
-            return res.status(500).json({ 'error': 'server erreur' })
+            return res.status(500).json({ 'error': err })
         });
 
     }
