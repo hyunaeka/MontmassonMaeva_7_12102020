@@ -1,5 +1,6 @@
 const jwtUtils = require('../utils/utils');
 const models = require('../models');
+const fs = require('fs');
 
 
 
@@ -13,7 +14,9 @@ savePost: async function (req, res){
 
     const title = req.body.title; 
     const content = req.body.content; 
-    const atachement = req.body.atachement; 
+    const attachment = req.body.attachment; 
+
+
 
 
     if (title == null || content == null) {
@@ -29,13 +32,14 @@ savePost: async function (req, res){
     }).then(async function(user){
 
         if(user){
+
             let user = await models.User.findOne({ where: {id : userId} })
             let newPost = await models.Post.create({
 
                title : title,
                userName : user.username,
                content : content,
-               atachement : atachement,
+               attachment : attachment,
                UserId : user.id,
                
                
@@ -79,7 +83,7 @@ modifyPost: async function (req, res) {
                     if (req.body.content){
                         post.content = req.body.content
                     };
-                    if (req.body.attachement){
+                    if (req.body.attachment){
                         post.attachement = req.body.attachment
                     };
                     const newPost = await post.save({ fields: ['title','content','attachment']});

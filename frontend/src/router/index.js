@@ -4,8 +4,8 @@ import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Home from '../views/Home.vue'
-import Wall from '../views/Wall.vue'
-import Post from '../components/Wall.vue'
+import Post from '../components/Post.vue'
+import createPost from '../views/CreatePost.vue'
 
 Vue.use(VueRouter)
 
@@ -30,8 +30,8 @@ const router = new VueRouter({
   {path: '/profile', name: 'profile', component: Profile },
   {path: '/Dashboard', name: 'dashboard', component: Dashboard },
   {path: '/Home', name: 'home', component: Home },
-  {path: '/Wall', name: 'wall', component: Wall },
   {path: '/postsView/:id', name: 'postsView', component: Post },
+  {path: '/createPost', name: 'CreatePost', component: createPost },
   ]
 })
 

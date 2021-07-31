@@ -1,6 +1,8 @@
 <template>
 	<div id="wall" class="wall">
 
+            <button><router-link :to="'/createPost/'">créer un article</router-link></button>
+
          <h1 class="card__title">Publication</h1>
           
            <div class="card" :key="index" v-for="(article, index) in posts" >
@@ -36,6 +38,17 @@ export default {
     },
 
         created() {
+
+            const userToken = localStorage.getItem("user");
+            const accessToken = JSON.parse(userToken);
+            console.log(accessToken.token)
+            
+        axios.interceptors.request.use(
+                      config => {
+                      config.headers.authorization = `Bearer ${accessToken.token}`;
+                    return config;
+                }, error => { return Promise.reject(error);})
+
         axios.get('http://localhost:3000/api/posts/all')
             .then(response => { for( const postsView of response.data){
                 this.posts.push(postsView)

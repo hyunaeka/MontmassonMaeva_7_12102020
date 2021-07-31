@@ -1,6 +1,7 @@
 <template>
     <div>
         Home
+        
         <wallscard/>
     </div>
 
@@ -10,14 +11,16 @@
 
 <script>
 
-import wallscard from '@/components/Card.vue'
+import wallscard from '@/components/AllPosts.vue'
+
 
 export default{
     name: 'home',
 
     components: {
 
-        wallscard
+        wallscard,
+
 
     }
 }
