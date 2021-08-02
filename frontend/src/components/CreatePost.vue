@@ -11,6 +11,10 @@
                 <label for="content">Post</label>
                 <input  v-model="content" type="text" id="content" class="form-control">
              </div>
+            <div class="form-row" >
+            <label for="file"><i class="fas fa-cloud-upload-alt"></i> Ajouter une image</label>
+             <input type="file" @change="selectedFile" id="file" name="file" accept="image/*" />
+             </div>
                 <button @click="createPost()">Créer un post</button>
         </div>
     </div>
@@ -42,7 +46,15 @@ export default {
 
     methods: {
 
-        createPost: function(){
+        selectedFile(e){
+
+                this.attachment = e.target.files[0];
+
+        },
+
+        createPost(){
+
+
 
              const userToken = localStorage.getItem("user");
             const accessToken = JSON.parse(userToken);
@@ -54,16 +66,22 @@ export default {
                     return config;
                 }, error => { return Promise.reject(error);})
 
-        const postSend = {
-         title: this.title,
-         content: this.content,
-                 }
+        const title = this.title;
+        const content = this.content;
+
+        const postSend = new FormData(); 
+
+        postSend.append('title', title);
+        postSend.append('content', content); 
+        postSend.append('image', this.attachment);
+                 
 
         axios.post(`http://localhost:3000/api/posts/new`, postSend)
         .then(response =>{
             
             this.title = response.data
             this.content = response.data
+            this.attachment = response.data
           
           console.log(response)
             this.$router.push('/home')

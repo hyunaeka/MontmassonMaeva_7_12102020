@@ -6,6 +6,7 @@
                <p>{{ articleUnique.userName }}</p>
                <p>{{ articleUnique.content}}</p>
                <p>{{ articleUnique.title}}</p>
+               <img :src="articleUnique.attachment">
                <div class="card card__deletePost">
                  <button v-if=" this.idPostUser == this.idTokenAdmin" @click="deletePost(articleUnique.id)">Supprimer l'article</button>
                 
@@ -15,6 +16,10 @@
                 <input v-model="title" type="text" id="title" class="form-control">
                 <label for="content">Contenu du post</label>
                 <input v-model="content" type="text" id="content" class="form-control">
+                </div>
+                <div class="form-row" >
+                <label for="file"><i class="fas fa-cloud-upload-alt"></i> Ajouter une image</label>
+                <input type="file" @change="selectedFile" id="file" name="file" accept="image/*" />
                 </div>
                 <button v-if=" this.idPostUser == this.idTokenAdmin" @click="modifyPost(articleUnique.id)" >Modifier le post</button>
                 </div>
@@ -119,6 +124,13 @@ export default {
 
   methods: {
 
+    
+        selectedFile(e){
+
+                this.attachment = e.target.files[0];
+
+        },
+
       createComment: function(){
 
          const userToken = localStorage.getItem("user");
@@ -139,9 +151,10 @@ export default {
         .then(response =>{
             
             this.comment = response.data.comment
+            
           
           console.log(response)
-        })
+        }).then(() =>{this.$router.push('/home')})
 
 
         
@@ -161,8 +174,7 @@ export default {
 
 
         axios.delete(`http://localhost:3000/api/comments/delete/` + idComment)
-        .then(()=> {
-        })
+        .then(() =>{this.$router.push('/home')})
       },
 
 
@@ -180,8 +192,7 @@ export default {
 
 
         axios.delete(`http://localhost:3000/api/posts/delete/` + idpost)
-        .then(()=> {
-        })
+        .then(() =>{this.$router.push('/home')})
 
       },
 
@@ -198,17 +209,22 @@ export default {
                     return config;
                 }, error => { return Promise.reject(error);})
 
-            const postModifySend = {
+        const title = this.title;
+        const content = this.content;
 
-                    title: this.title,
-                    content: this.content,
-            }
+            const postModifySend = new FormData(); 
+
+        postModifySend.append('title', title);
+        postModifySend.append('content', content); 
+        postModifySend.append('image', this.attachment);
 
           axios.put(`http://localhost:3000/api/posts/modify-post/` + idpost , postModifySend)
         .then(response => {
 
           this.title = response.data.title 
           this.content = response.data.content
+          this.attachment = response.data.attachment
+          this.$router.push('/home')
         })
 
 

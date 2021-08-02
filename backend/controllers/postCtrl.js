@@ -14,7 +14,7 @@ savePost: async function (req, res){
 
     const title = req.body.title; 
     const content = req.body.content; 
-    const attachment = req.body.attachment; 
+    let imageUrl = "";
 
 
 
@@ -33,13 +33,19 @@ savePost: async function (req, res){
 
         if(user){
 
+            if (req.file) {
+                imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            } else {
+                imageUrl = null;
+            }
+
             let user = await models.User.findOne({ where: {id : userId} })
             let newPost = await models.Post.create({
 
                title : title,
                userName : user.username,
                content : content,
-               attachment : attachment,
+               attachment : imageUrl,
                UserId : user.id,
                
                
@@ -61,6 +67,7 @@ modifyPost: async function (req, res) {
 
     const HeaderAuth = req.headers['authorization'];
     const userId = jwtUtils.getUserId(HeaderAuth);
+    let newImageUrl;
 
     if (userId < 0)
         return res.status(400).json({ 'error': 'invalide Token' })
@@ -72,24 +79,41 @@ modifyPost: async function (req, res) {
 
         if (user) {
 
-            await models.Post.findOne({
-                where: { id: req.params.id }
-            }).then(async function (post) {
+            await models.Post.findOne({ where: { id: req.params.id }
+            })
+            .then(async function (post) {
 
-                if (post) {
+                if (post) { 
+
+                    if (req.file) {
+                        newImageUrl = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+
+                        if (post.attachment) {
+                            const filename = post.attachment.split("/images")[1];
+                            fs.unlink(`images/${filename}`, (err) => {
+
+                              if (err) console.log(err);
+                              
+                              else {
+                                console.log(`Deleted file: images/${filename}`);
+                              }
+                            });
+                          }
+                        };
+
+                    if (req.file) {
+                    post.attachment = newImageUrl
+                };
                     if (req.body.title){
+
                         post.title = req.body.title
                     };
                     if (req.body.content){
                         post.content = req.body.content
                     };
-                    if (req.body.attachment){
-                        post.attachement = req.body.attachment
-                    };
                     const newPost = await post.save({ fields: ['title','content','attachment']});
                         return res.status(200).json({
-                            post: newPost,
-                            messageRetour: "Changement enregistré"
+                            post: newPost
                         });
                 }
                 else {
@@ -131,9 +155,17 @@ deletePost: async function (req, res) {
             }).then(async function (post) {
 
                 if (post) {
-                    await models.Post.destroy({
-                         where: { id: post.id }});
-                    return res.status(200).json({ message: "Le post a bien été supprimé" });
+                    if (post.attachment) {
+                        const filename = post.attachment.split("/images")[1];
+                        fs.unlink(`images/${filename}`, () => {
+                            models.Post.destroy({ where: { id: post.id } })
+                            res.status(200).json({ message: "Publication supprimée" });
+                        });
+                    } else {
+                        await models.Post.destroy({
+                            where: { id: post.id }});
+                        return res.status(200).json({ message: "Publication supprimée" });
+                    }
                 }
                 else {
                     return res.status(404).json({ 'error': 'Impossible de supprimer le post' });
