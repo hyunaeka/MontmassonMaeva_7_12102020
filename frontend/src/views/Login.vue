@@ -1,12 +1,43 @@
 <template>
-  <div class="card">
-     
-      <h1 class="card__tile" v-if="mode == 'login'">Connexion</h1>
-      <h1 class="card__tile" v-else>Inscription</h1>
-        <p class="card__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <button class="card__action" @click="switchSignUp()">Créer un compte</button></p>
-        <p class="card__subtitle" v-else>Tu as déjà un compte ? <button class="card__action" @click="switchLogin()">Se connecter</button></p>
 
-   <h2>Voici le formulaire d'inscription {{day}}</h2>
+  
+  <div class="card">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"  integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+    <div class="class card card__presentation">
+    <div>
+    <h1 class="card__title groupamania">GROUPAMANIA</h1>
+    <p> Partagez, Échangez , Découvrez ————</p>
+
+      <div class="d-flex flex-row justify-content-center">
+        <div class="step p-2 ">
+          
+          <h3><i class="fas fa-file-signature"></i><span class=" step__content">  Inscrivez-vous </span></h3>
+
+        </div>
+        <div class="step p-2">
+
+          <h3> <i class="fas fa-upload"></i><span class=" step__content"> Publiez du contenu </span></h3>
+          
+          </div>
+        <div class="step p-2">
+          
+         <h3> <i class="fas fa-edit"></i><span class=" step__content"> Commentez et intéragissez avec vos collègues </span> </h3>
+
+        </div>
+      </div>
+    </div>
+
+    </div>
+  <div class="card mt-5">
+     <img src="../assets/icon.png">
+    <h1 class="card__title" v-if="mode == 'login'">Connexion</h1>
+      <h1 class="card__title" v-else>Inscription</h1>
+        <p class="card__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <button class="card__action" @click="switchSignUp()">Créer un compte</button></p>
+        <p class="card__subtitle" v-else>Tu as déjà un compte ? <button class="card__action btn_switch" @click="switchLogin()">Se connecter</button></p>
+
+   <h2> Inscription </h2>
 
 
 
@@ -34,13 +65,13 @@
         <textarea v-model="bio" name="bio" id="bio" class="form-control"></textarea>
       </div>
 
-      <button @click="login()" class="button button--disabled" v-if="mode == 'login'"> 
+      <button @click="login()" class="button button--disabled mt-2 mb-5 " v-if="mode == 'login'"> 
         <span v-if="status == 'loading'"> Chargement </span>
         <span v-else> Connexion </span>
         </button>
-      <button  @click="createUser()" class="button" v-else> Créer mon compte </button>
+      <button  @click="createUser()" class="button mt-2 mb-5" v-else> Créer mon compte </button>
 
-    
+    </div>
   </div>
 
 </template>
@@ -52,6 +83,7 @@ import { mapState } from 'vuex'
 export default {
 
   name: "login",
+
   data: function(){
       return {
           mode: 'login',
@@ -62,6 +94,14 @@ export default {
       }
 
   },
+
+  beforeCreate () {
+    document.querySelector('body').setAttribute('style', 'background: #FED6D6')
+  },
+  beforeDestroy () {
+    document.querySelector('body').setAttribute('style', 'background: #FED6D6')
+  },
+
   computed : {
       ...mapState(['status', 'day'])
   },
@@ -111,6 +151,61 @@ export default {
 </script>
 
 <style scoped>
+
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville:ital@1&family=Roboto&display=swap');
+
+.card {
+
+  display: flex;
+  align-items: center;
+  border: 0;
+}
+
+.card__presentation {
+
+  color: black;
+  height: 100%;
+  width: 100%;
+  padding: 50px;
+  background: #FED6D6;
+}
+
+.groupamania {
+
+  font-family: 'Anton';
+}
+
+.step {
+  font-family: 'Anton';
+}
+
+.step h3 {
+
+  font-size: 20px;
+}
+
+.step__content {
+
+  font-family: 'Libre Baskerville';
+
+}
+
+button {
+
+  color: black;
+  border: #FED6D6 solid 2px;
+  background-color: white;
+
+}
+
+img {
+
+  width: 100px;
+  height: 100px;
+}
+
 
 </style>
 

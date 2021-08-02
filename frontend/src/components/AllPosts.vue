@@ -1,21 +1,31 @@
 <template>
 	<div id="wall" class="wall">
 
-            <button><router-link :to="'/createPost/'">créer un article</router-link></button>
+      
 
-         <h1 class="card__title">Publication</h1>
-          
-           <div class="card" :key="index" v-for="(article, index) in posts" >
-                <router-link :to="`/postsView/${article.id}`">
-               <h1>{{ article.title }}</h1>
-               </router-link>
-              
-               <p>{{ article.content }}</p>
-               <p>{{ article.userName }}</p>
-               <p>{{ article.createdAt }}</p>
-                <hr>
+                    <div class="container">
 
-           </div>
+            <button class=" mt-5"><router-link :to="'/createPost/'">créer un article</router-link></button>
+                </div>
+
+                <div class="container card mb-5">
+                    <h3>Catégories</h3>
+                </div>
+
+            <div class=" container ">
+                <div class="card mb-2" :key="index" v-for="(article, index) in posts" >
+                        <router-link :to="`/postsView/${article.id}`">
+                    <h1>{{ article.title }}</h1>
+                    </router-link>
+                    
+                    <p>{{ article.content }}</p>
+                    <p>{{ article.userName }}</p>
+                    <p>{{ article.createdAt }}</p>
+                    
+                        <hr>
+
+                </div>
+            </div>
            
            
 	</div>
@@ -61,3 +71,64 @@ export default {
 }
 
 </script>
+
+
+<style scoped>
+
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville:ital@1&family=Roboto&display=swap');
+
+.card {
+
+  display: flex;
+  border: 0;
+  width: 100%;
+  padding: 80px;
+}
+
+.card__presentation {
+
+  color: black;
+  height: 100%;
+  width: 100%;
+  padding: 50px;
+  background: #FED6D6;
+}
+
+.groupamania {
+
+  font-family: 'Anton';
+}
+
+.step {
+  font-family: 'Anton';
+}
+
+.step h3 {
+
+  font-size: 20px;
+}
+
+.step__content {
+
+  font-family: 'Libre Baskerville';
+
+}
+
+button {
+
+  color: black;
+  border: #FED6D6 solid 2px;
+  background-color: white;
+
+}
+
+img {
+
+  width: 100px;
+  height: 100px;
+}
+
+
+</style>
