@@ -1,7 +1,5 @@
 <template>
     <div>
-        créer un post
-        
         <createPost/>
     </div>
 

@@ -1,21 +1,24 @@
 <template>
-	<div>
-                
-        <div class="card card__createpost">
+	<div class="container">
 
-             <div class="form-row" >
-                <label for="title">title</label>
-                <input  v-model="title" type="text" id="title" class="form-control">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"  integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+                
+        <div class="card m-5 p-5">
+
+             <div class="form-row container mb-4" >
+                <label class="mb-3 form__title" for="title">Titre de la publication</label>
+                <input  v-model="title" type="text" id="title" class="form-control" required>
              </div>
-            <div class="form-row" >
-                <label for="content">Post</label>
-                <input  v-model="content" type="text" id="content" class="form-control">
+             
+            <div class="form-row container mb-4" >
+                <label class="mb-3 form__title" for="content ">Contenu de la publication</label>
+                <textarea v-model="content" type="text" id="content" class="form-control" required></textarea>
              </div>
-            <div class="form-row" >
-            <label for="file"><i class="fas fa-cloud-upload-alt"></i> Ajouter une image</label>
-             <input type="file" @change="selectedFile" id="file" name="file" accept="image/*" />
+            <div class="form-row container mb-4" >
+            <label class=" form__title" for="file"> Partager une image,un gif...</label>
+             <input class=" m-2" type="file" @change="selectedFile" id="file" name="file" accept="image/*" />
              </div>
-                <button @click="createPost()">Créer un post</button>
+                <button class=" btn-info" @click="createPost()">Créer la publication</button>
         </div>
     </div>
 
@@ -43,6 +46,9 @@ export default {
 
             
     },
+      beforeCreate () {
+    document.querySelector('body').setAttribute('style', 'background: #091F43 ')
+  },
 
     methods: {
 
@@ -84,7 +90,7 @@ export default {
             this.attachment = response.data
           
           console.log(response)
-            this.$router.push('/home')
+            this.$router.push('/createSuccess')
         })
 
       },
@@ -92,3 +98,26 @@ export default {
 }
 
 </script>
+
+<style scoped>
+.form__title {
+
+    font-family: 'Zilla Slab';
+    font-size: 20px;
+}
+
+button:hover {
+
+  background:#BA4D55;
+  border-color: #BA4D55;
+  color: #091F43;
+}
+
+button {
+
+  color: #FED6D6;
+  border: #091F43 solid 2px;
+  background-color: #091F43;
+
+}
+</style>

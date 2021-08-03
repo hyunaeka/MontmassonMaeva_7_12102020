@@ -5,23 +5,23 @@
 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"  integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
-    <div class="class card card__presentation">
-    <div>
-    <h1 class="card__title groupamania">GROUPAMANIA</h1>
-    <p> Partagez, Échangez , Découvrez ————</p>
+    <div class=" card card__presentation">
+      <div>
+      <h1 class="card__title groupamania  ">GROUPAMANIA</h1>
+      <p class="p-1"> Partagez, Échangez , Découvrez ————</p>
 
       <div class="d-flex flex-row justify-content-center">
-        <div class="step p-2 ">
+        <div class="step  p-1">
           
           <h3><i class="fas fa-file-signature"></i><span class=" step__content">  Inscrivez-vous </span></h3>
 
         </div>
-        <div class="step p-2">
+        <div class="step p-1 ">
 
           <h3> <i class="fas fa-upload"></i><span class=" step__content"> Publiez du contenu </span></h3>
           
           </div>
-        <div class="step p-2">
+        <div class="step p-1 ">
           
          <h3> <i class="fas fa-edit"></i><span class=" step__content"> Commentez et intéragissez avec vos collègues </span> </h3>
 
@@ -34,10 +34,8 @@
      <img src="../assets/icon.png">
     <h1 class="card__title" v-if="mode == 'login'">Connexion</h1>
       <h1 class="card__title" v-else>Inscription</h1>
-        <p class="card__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <button class="card__action" @click="switchSignUp()">Créer un compte</button></p>
-        <p class="card__subtitle" v-else>Tu as déjà un compte ? <button class="card__action btn_switch" @click="switchLogin()">Se connecter</button></p>
-
-   <h2> Inscription </h2>
+        <p class="card__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <button class="card__action btn" @click="switchSignUp()">Créer un compte</button></p>
+        <p class="card__subtitle" v-else>Tu as déjà un compte ? <button class="card__action btn_switch btn" @click="switchLogin()">Se connecter</button></p>
 
 
 
@@ -65,7 +63,7 @@
         <textarea v-model="bio" name="bio" id="bio" class="form-control"></textarea>
       </div>
 
-      <button @click="login()" class="button button--disabled mt-2 mb-5 " v-if="mode == 'login'"> 
+      <button @click="login()" class="button btn button--disabled mt-2 mb-5 " v-if="mode == 'login'"> 
         <span v-if="status == 'loading'"> Chargement </span>
         <span v-else> Connexion </span>
         </button>
@@ -96,10 +94,10 @@ export default {
   },
 
   beforeCreate () {
-    document.querySelector('body').setAttribute('style', 'background: #FED6D6')
+    document.querySelector('body').setAttribute('style', 'background: white')
   },
   beforeDestroy () {
-    document.querySelector('body').setAttribute('style', 'background: #FED6D6')
+    document.querySelector('body').setAttribute('style', 'background: white')
   },
 
   computed : {
@@ -153,8 +151,8 @@ export default {
 <style scoped>
 
 
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville:ital@1&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&family=Overpass:ital,wght@0,600;1,600&family=Zilla+Slab:wght@600&display=swap');
+
 
 .card {
 
@@ -165,16 +163,16 @@ export default {
 
 .card__presentation {
 
-  color: black;
+  color: #FFD6D6;
   height: 100%;
   width: 100%;
   padding: 50px;
-  background: #FED6D6;
+  background: #091F43 ;
 }
 
 .groupamania {
 
-  font-family: 'Anton';
+  font-family: 'Zilla Slab';
 }
 
 .step {
@@ -188,7 +186,7 @@ export default {
 
 .step__content {
 
-  font-family: 'Libre Baskerville';
+  font-family: 'Overpass';
 
 }
 
@@ -204,6 +202,15 @@ img {
 
   width: 100px;
   height: 100px;
+}
+
+h1 {
+  color: #FFD6D6 ;
+  
+}
+
+p {
+  font-size: 20px;
 }
 
 

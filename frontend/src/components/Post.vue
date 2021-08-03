@@ -1,54 +1,73 @@
 <template>
-	<div id="wall" class="wall">
+	<div id="wall" class="wall container mt-5">
+    
 
-         <h1 class="card__title" >Le post numéro {{ id }}</h1>
-           <div class="card"  >
-               <p>{{ articleUnique.userName }}</p>
-               <p>{{ articleUnique.content}}</p>
-               <p>{{ articleUnique.title}}</p>
-               <img :src="articleUnique.attachment">
-               <div class="card card__deletePost">
-                 <button v-if=" this.idPostUser == this.idTokenAdmin" @click="deletePost(articleUnique.id)">Supprimer l'article</button>
-                
-                <div v-if=" this.idPostUser == this.idTokenAdmin" class="card card__modifyPost">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"  integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+           <div class="card container p-5"  >
+             
+             
+<h1 class="pb-5 form__title ">Publication de {{articleUnique.userName}}</h1>
+
+
+              <img :src="articleUnique.attachment" class="rounded mx-auto d-block" >
+                <h2 class="m-5 d-flex justify-content-center form__title ">{{ articleUnique.title}}</h2>
+                <p  class=" mb-5 d-flex justify-content-center">{{ articleUnique.content}}</p>
+               
+               
+                <div v-if=" this.idPostUser == this.idTokenAdmin" class="card card__modifyPost container p-5">
+                  
                 <div class="form-row">
-                <label for="title">Nouveau titre du post</label>
-                <input v-model="title" type="text" id="title" class="form-control">
-                <label for="content">Contenu du post</label>
-                <input v-model="content" type="text" id="content" class="form-control">
+                <label class=" pb-3 form__title" for="title">Nouveau titre du post</label>
+                <input  v-model="title" type="text" id="title" class="form-control" required>
+                <p class="modify"> *obligatoire </p>
+                <label class=" pt-4 pb-3 form__title" for="content">Contenu du post</label>
+                <textarea v-model="content" type="text" id="content" class="form-control content__modify" required ></textarea>
+                 <p class="modify"> *obligatoire </p>
                 </div>
-                <div class="form-row" >
-                <label for="file"><i class="fas fa-cloud-upload-alt"></i> Ajouter une image</label>
-                <input type="file" @change="selectedFile" id="file" name="file" accept="image/*" />
+                <div class="form-row pt-5 pb-5 " >
+                <label  class="form__title" for="file"><i class="fas fa-cloud-upload-alt"></i> Ajouter une image</label>
+                <input type="file" @change="selectedFile" id="file" name="file" accept="image/*" /><p class="modify"> *Falcultatif </p>
+               
                 </div>
-                <button v-if=" this.idPostUser == this.idTokenAdmin" @click="modifyPost(articleUnique.id)" >Modifier le post</button>
-                </div>
-                
-               </div>
-               <div class="card card__createcomment">
+                <button class="btn__modify btn form__title" v-if=" this.idPostUser == this.idTokenAdmin" @click="modifyPost(articleUnique.id) != null" >Modifier le post</button>
 
-                <div class="form-row" >
-                <label for="comment">Répondre</label>
-                <input  v-model="comment" type="text" id="comment" class="form-control">
-                <button @click="createComment()">Créer un commentaire</button>
+                
+                </div>
+                
+               
+               <div class=" card__deletePost container pt-5 pb-5">
+                 <button class="btn-danger btn btn__suppr form__title" v-if=" this.idPostUser == this.idTokenAdmin" @click="deletePost(articleUnique.id)">Supprimer l'article</button>
+                </div>
+               <div class="card card__createcomment container p-5 mb-4">
+
+                <div class="form-row " >
+                <label class=" pb-3 form__title " for="comment">Répondre</label>
+                <input  v-model="comment" type="text" id="comment" class="form-control" required>
+                <button class="mt-3 btn form__title" @click="createComment()">Créer un commentaire</button>
                 </div>
                 
                </div>
-              <div class="card card__comment__test">
-               <div class="card__comment card" :key="index" v-for="(datapost, index) in comments">
-                                <p>{{ datapost.userName }}</p>
+              <div class="card card__comment__test d-flex ">
+
+               <div class="card__comment card p-5 m-5" :key="index" v-for="(datapost, index) in comments">
+                 <div class="d-flex flex-row-reverse">
+                  <i @click="deleteComment(datapost.id)" class="fas btn fa-times suppr"></i>
+                  </div>
+                                <p class=" form__title ">{{ datapost.userName }}</p>
                                 <p>{{ datapost.comment}}</p>
-                  <button @click="deleteComment(datapost.id)"> supprimer</button>
                </div>
               
                </div>
            </div>
+
+           
 	</div>
 </template>
 
 <script>
 
 import axios from 'axios'
+
 
 
 export default {
@@ -75,6 +94,9 @@ export default {
 
   },
 
+  beforeCreate () {
+    document.querySelector('body').setAttribute('style', 'background: #091F43 ')
+  },
         mounted() {
 
             const userToken = localStorage.getItem("user");
@@ -124,7 +146,7 @@ export default {
 
   methods: {
 
-    
+          
         selectedFile(e){
 
                 this.attachment = e.target.files[0];
@@ -154,7 +176,7 @@ export default {
             
           
           console.log(response)
-        }).then(() =>{this.$router.push('/home')})
+        }).then(() =>{location.reload()})
 
 
         
@@ -174,7 +196,7 @@ export default {
 
 
         axios.delete(`http://localhost:3000/api/comments/delete/` + idComment)
-        .then(() =>{this.$router.push('/home')})
+        .then(() =>{location.reload()})
       },
 
 
@@ -192,7 +214,7 @@ export default {
 
 
         axios.delete(`http://localhost:3000/api/posts/delete/` + idpost)
-        .then(() =>{this.$router.push('/home')})
+        .then(() =>{this.$router.push('/deleteSuccess')})
 
       },
 
@@ -217,23 +239,77 @@ export default {
         postModifySend.append('title', title);
         postModifySend.append('content', content); 
         postModifySend.append('image', this.attachment);
+     
 
           axios.put(`http://localhost:3000/api/posts/modify-post/` + idpost , postModifySend)
-        .then(response => {
-
+        .then(response => {     
+            
           this.title = response.data.title 
           this.content = response.data.content
           this.attachment = response.data.attachment
-          this.$router.push('/home')
-        })
+          this.$router.push('/createSuccess')
+          
 
-
-
-      }
-
+        }).catch((error) => {
+              console.error(error);
+          });
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
+
+img {
+  width: 50%!important;
+  height: 50% !important;
+}
+
+.suppr {
+  color: red;
+}
+
+.modify {
+  color: red;
+}
+
+.card__comment {
+
+  border: solid 2px pink;
+}
+
+button {
+
+  color: black;
+  border: #FED6D6 solid 2px;
+  background-color: #FED6D6;
+  font-family: 'Zilla Slab';
+
+}
+
+button:hover{
+
+  color: white;
+  border: #BA4D55 solid 2px;
+  background-color: #BA4D55;
+  font-family: 'Zilla Slab';
+
+
+}
+
+.btn__suppr {
+
+  background: rgb(184, 4, 4);
+  color: white;
+}
+
+.form__title {
+
+  font-family: 'Zilla Slab'
+}
+
+h1 {
+
+  font-size: 20px;
+}
 </style>
