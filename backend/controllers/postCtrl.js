@@ -93,12 +93,13 @@ modifyPost: async function (req, res) {
                             fs.unlink(`images/${filename}`, (err) => {
 
                               if (err) console.log(err);
-                              
+
                               else {
                                 console.log(`Deleted file: images/${filename}`);
                               }
                             });
                           }
+
                         };
 
                     if (req.file) {
@@ -110,6 +111,7 @@ modifyPost: async function (req, res) {
                     };
                     if (req.body.content){
                         post.content = req.body.content
+
                     };
                     const newPost = await post.save({ fields: ['title','content','attachment']});
                         return res.status(200).json({
@@ -184,6 +186,11 @@ deletePost: async function (req, res) {
 /************************************************************************* All POSTS *******************************************************************************/
 
 getAllPost: async function (req, res) {
+
+    const HeaderAuth = req.headers['authorization'];
+    const userId = jwtUtils.getUserId(HeaderAuth);
+
+
     await models.Post.findAll().then(allPost => res.send(allPost))
 
 },
@@ -205,7 +212,7 @@ getOnePost: async function (req, res) {
             await models.User.findOne({ 
                 attributes: ['userName'],
                 where: { id: userId }
-            }).then(async function (user) {
+            }).then(async function () {
                 await models.Comment.findAll({
                     attributes: ['comment', 'userName','id', 'userId'],
                     where: { postId: req.params.id },

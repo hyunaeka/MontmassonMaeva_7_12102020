@@ -1,24 +1,45 @@
 <template>
 
-  <div class="container d-flex flex-row mt-5 ">
+  <div class="container d-flex flex-column mt-5 ">
 
-    <div class=" card left-column col-6 mt-5 p-4">
-    <h1 class="card__title">Bienvenue {{user.username}}</h1>
-    <p class="card__subtitle">Informations personnelles</p>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"  integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+
+    <div class=" card mt-5 p-5 card__perso">
+    <h1 class="card__title container d-flex justify-content-center p-5">Bienvenue {{user.username}}</h1>
+
+    <p class="container d-flex justify-content-center">Votre bio:  </p>
+    <p class="container card d-flex justify-content-center p-5 bio__content " >{{user.bio}}</p>
+
+    <div class=" flex-wrap justify-content-center p-5">
+      
+    <h2 class="card__subtitle pb-4">Informations personnelles</h2>
     <p class=""> Votre pseudo: {{user.username}}  </p>
-    <p>Votre bio: {{user.bio}}</p>
     <p>Votre email: {{user.email}}</p>
     <img :src="user.photo"/>
-     <button @click="logout()" class="button"> Déconnexion </button>
+     <button @click="logout()" class="button btn btn__x justify-content-center p-2 mt-3"> Déconnexion </button>
+    </div>
     </div>
 
-    <div class="card right-column col-6 p-5 mt-5 p-1">
-      <p>Modifier mes <button> informations personnelles </button></p>
-       <p>Changer mon <button> mot de passe </button></p>
+    <div class="card p-5 mt-5 p-1 card__modify">
+      <p   v-if="mode == 'profile'"> <i @click="switchModify()" class="fas p-2 btn fa-user p-1"></i>Modifier mes informations personnelles</p>
+      <div class="form-row"  v-if="mode == 'modify'">
+        <label class="mb-3 " for="username">Votre nouveau pseudo</label>
+        <input v-model="username" type="text" id="prenom" class="form-control">
+      </div>
+      <div class="form-row"  v-if="mode == 'modify'">
+        <label class="mb-3 mt-4" for="bio">Ma bio</label>
+        <textarea v-model="bio" type="text" id="bio" class="form-control"></textarea>
+        <button @click="modifyUser()" class=" mt-2 mb-5 p-2 btn" v-if="mode == 'modify'">Modifier</button>
+      </div>
+      <div class="" v-else>
+       <p> <i class="fas p-2 btn fa-user p-1"></i>Changer mon mot de passe </p>
+       </div>
+      <div >
+       <p> <i @click="deleteUser()" class="fas fa-user-times p-2 btn "></i>Supprimer mon compte </p>
+       </div>
     </div>
-    <div class="form-row">
-      
-    </div>
+
 
   </div>
 </template>
@@ -26,16 +47,24 @@
 <script>
 
 import { mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
 
   name: 'profile',
+  data: function(){
+    return{
+      mode: 'profile',
+      bio: '',
+      username:'',
 
-  beforeCreate () {
-    document.querySelector('body').setAttribute('style', 'background: #FED6D6')
+
+    }
   },
-  beforeDestroy () {
-    document.querySelector('body').setAttribute('style', 'background: #FED6D6')
+
+  
+  beforeCreate () {
+    document.querySelector('body').setAttribute('style', 'background: white')
   },
 
   mounted: function () {
@@ -54,10 +83,81 @@ export default {
   },
   methods: {
 
+          switchModify: function(){
+          this.mode = 'modify';
+      },
+      switchProfile: function(){
+          this.mode = 'profile';
+      },
+
     logout: function () {
       this.$store.commit('logout');
       this.$router.push('/');
-    }
+    },
+
+    modifyUser: function(){
+
+      const userToken = localStorage.getItem("user");
+            const accessToken = JSON.parse(userToken);
+            console.log(accessToken.token)
+
+              axios.interceptors.request.use(
+                      config => {
+                      config.headers.authorization = `Bearer ${accessToken.token}`;
+                    return config;
+                }, error => { return Promise.reject(error);})
+
+       
+
+            const userModifySend = {
+
+              bio : this.bio,
+              username : this.username
+
+            }
+     
+
+          axios.put('http://localhost:3000/api/users/myprofile' , userModifySend)
+        .then(response => {     
+            
+          this.username = response.data.bio
+          this.bio = response.data.username
+
+          location.reload();
+          
+
+        }).catch((error) => {
+              console.error(error);
+          });
+    },
+
+    deleteUser: async function(){
+
+        const userToken = localStorage.getItem("user");
+            const accessToken = JSON.parse(userToken);
+            console.log(accessToken.token)
+
+              axios.interceptors.request.use(
+                      config => {
+                      config.headers.authorization = `Bearer ${accessToken.token}`;
+                    return config;
+                }, error => { return Promise.reject(error);})
+
+
+        axios.delete('http://localhost:3000/api/users/deleteMe')
+        .then(() =>{
+          localStorage.removeItem('user')
+          this.$router.push('/deleteUser')
+          
+          
+          
+          })
+        
+        
+        .catch((error) => {
+              console.error(error);
+          });
+      },
 
   }
 }
@@ -67,8 +167,7 @@ export default {
 <style scoped>
 
 
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Libre+Baskerville:ital@1&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&family=Overpass:ital,wght@0,300;0,600;1,600&family=Zilla+Slab:wght@600&display=swap');
 
 .card {
 
@@ -77,11 +176,11 @@ export default {
 
 .card__presentation {
 
-  color: black;
+  color: white;
   height: 100%;
   width: 100%;
   padding: 50px;
-  background: #FED6D6;
+  background: white;
 }
 
 .groupamania {
@@ -108,20 +207,61 @@ button {
 
   color: black;
   border: #FED6D6 solid 2px;
-  background-color: white;
+  background-color: #FED6D6;
 
 }
 
 .card__content {
 }
 
-h1 {
-  font-size: 25px;
+.card__perso {
+  background: #091F43 ;
+  color: white;
 }
 
-body {
+.card__modify {
 
-  background: black;
+  background: #091F43;
+  color: white;
+
+}
+
+
+h1 {
+    font-family: 'Zilla Slab';
+    font-size: 28px;
+}
+
+h2 {
+  font-family: 'Overpass';
+  font-size: 22px;
+}
+
+p{
+  font-family: 'Overpass';
+  font-weight: 300;
+}
+
+.bio__content {
+
+  color: #091F43;
+  width: 50%;
+}
+
+
+i {
+  color: #FED6D6;
+}
+
+i:hover {
+
+  color: red;
+}
+
+button:hover {
+
+  background:#BA4D55;
+  border-color: #BA4D55;
 }
 
 </style>

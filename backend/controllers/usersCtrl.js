@@ -163,5 +163,37 @@ module.exports = {
                return res.status(500).json({ 'error': err });
            })
 
-  }
+  },
+
+      /***************************************************************************** DELETE ONE USER *********************************************************************/
+
+  deleteUser: async function (req, res) {
+
+    const HeaderAuth = await req.headers['authorization'];
+    const userId = await jwtUtils.getUserId(HeaderAuth);
+    const isAdmin = await jwtUtils.getUserAdmin(HeaderAuth);
+
+    if (userId < 0)
+
+        return res.status(400).json({ 'error': 'invalide Token' })
+
+    await models.User.findOne({ where: { id: userId }})
+        .then(async function (user) {
+
+            if (userId === user.id || isAdmin === true ) {
+
+                await models.User.destroy({
+
+                    where: {id: userId}
+
+                }).then(() => res.send("Compte supprimé"));
+
+            } else {
+                res.status(404).json({ 'error': 'error' });
+            }
+        }).catch(function (err) {
+            return res.status(500).json({ 'error': err });
+        })
+},
+
 }
