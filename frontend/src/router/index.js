@@ -6,6 +6,9 @@ import Dashboard from '../views/Dashboard.vue'
 import Home from '../views/Home.vue'
 import Post from '../components/Post.vue'
 import createPost from '../views/CreatePost.vue'
+import createSuccess from '../components/CreateSuccessPost.vue'
+import deleteSuccess from '../components/DeletePostSuccess.vue'
+import deleteUser from '../components/DeleteUser.vue'
 
 Vue.use(VueRouter)
 
@@ -32,7 +35,10 @@ const router = new VueRouter({
   {path: '/Home', name: 'home', component: Home },
   {path: '/postsView/:id', name: 'postsView', component: Post },
   {path: '/createPost', name: 'CreatePost', component: createPost },
-  ]
+  {path: '/createSuccess', name: 'createSuccess', component: createSuccess },
+  {path: '/deleteSuccess', name: 'deleteSuccess', component: deleteSuccess },
+  {path: '/deleteUser', name: 'deleteUser', component: deleteUser },
+]
 })
 
 export default router

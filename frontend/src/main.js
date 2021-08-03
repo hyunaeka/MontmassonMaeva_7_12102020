@@ -8,15 +8,26 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { NavbarPlugin } from 'bootstrap-vue'
+import moment from 'moment'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import VueSimpleAlert from "vue-simple-alert";
+
+Vue.use(VueSimpleAlert);
 
 Vue.use(NavbarPlugin)
 
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-
 library.add(faUserSecret)
 
+
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+Vue.filter('formatDate', function(value) {
+
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY')
+  }
+});
 
 Vue.config.productionTip = false
 
