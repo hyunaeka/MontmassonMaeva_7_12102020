@@ -153,7 +153,6 @@ export default {
 /************************************************************************* Appelle fonction Log un utilisateur *******************************************************************************/
 
     login: function () {
-      const self = this;
       console.log(this.email, this.password);
       this.$store
         .dispatch("login", {
@@ -163,7 +162,7 @@ export default {
         .then(
           function (response) {
             console.log(response);
-            self.$router.push("/profile");
+            window.location.assign("http://localhost:8080/profile")
           },
           function (error) {
             console.log(error);

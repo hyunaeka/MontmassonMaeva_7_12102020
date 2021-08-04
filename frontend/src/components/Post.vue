@@ -204,8 +204,6 @@ export default {
           this.comments = response.data.comment;
           this.idCommentUser = response.data.comment.userId;
 
-          console.log(response.data.comment.userId);
-
           return console.log(response.data.comment);
         }
       });

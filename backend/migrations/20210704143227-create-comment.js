@@ -32,6 +32,8 @@ module.exports = {
         onDelete : 'CASCADE'
       },
       comment: {
+        allowNull: false,
+        onDelete : 'CASCADE',
         type: Sequelize.STRING
       },
       createdAt: {
