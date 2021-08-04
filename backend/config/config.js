@@ -1,12 +1,15 @@
-  
-{
-  "development": {
-    "username": "root",
-    "password": "180793365Aya",
-    "database": "projet7",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+require('dotenv').config()  
+
+module.exports = {
+  development: {
+    
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    dialect: 'mysql'
   },
+
   "test": {
     "username": "root",
     "password": null,

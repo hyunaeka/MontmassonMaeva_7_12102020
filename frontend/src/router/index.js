@@ -29,15 +29,15 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
 
-  {path: '/', name: 'login', component: Login },
-  {path: '/profile', name: 'profile', component: Profile },
-  {path: '/Dashboard', name: 'dashboard', component: Dashboard },
-  {path: '/Home', name: 'home', component: Home },
-  {path: '/postsView/:id', name: 'postsView', component: Post },
-  {path: '/createPost', name: 'CreatePost', component: createPost },
-  {path: '/createSuccess', name: 'createSuccess', component: createSuccess },
-  {path: '/deleteSuccess', name: 'deleteSuccess', component: deleteSuccess },
-  {path: '/deleteUser', name: 'deleteUser', component: deleteUser },
+  {path: '/', name: 'login', component: Login }, // Page principale du site
+  {path: '/profile', name: 'profile', component: Profile }, // Page profile de l'utilisateur
+  {path: '/Dashboard', name: 'dashboard', component: Dashboard }, // Page administration pour les admins ( pas encore mis en place )
+  {path: '/Home', name: 'home', component: Home }, // Page d'affichage de tous les posts
+  {path: '/postsView/:id', name: 'postsView', component: Post },  // Page affichage d'un post
+  {path: '/createPost', name: 'CreatePost', component: createPost }, // Page de création de post
+  {path: '/createSuccess', name: 'createSuccess', component: createSuccess }, // Page de confirmation modification ou création post
+  {path: '/deleteSuccess', name: 'deleteSuccess', component: deleteSuccess }, // Page de confirmation suppression de post
+  {path: '/deleteUser', name: 'deleteUser', component: deleteUser }, // Page de confirmation suppression de l'utilisateur
 ]
 })
 
